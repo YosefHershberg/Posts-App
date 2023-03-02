@@ -73,48 +73,10 @@ export default function App() {
       }),
     [mode]
   );
-  
-  // const theme = useMemo(
-  //   () =>
-  //     createTheme({
-  //       palette: {
-  //         primary: {
-  //           ...(mode === "dark" ? {
-  //             main: grey[600],
-  //           }
-  //             : {
-  //               main: blue[700],
-  //             }),
-  //         },
-  //         background: {
-  //           ...(mode === "dark" ? {
-  //             default: blueGrey[900],
-  //             paper: blueGrey[800],
-  //           }
-  //             : {
-  //               default: grey[50],
-  //               paper: grey[200],
-  //             }),
-  //         },
-  //         text: {
-  //           ...(mode === "light"
-  //             ? {
-  //               primary: grey[900],
-  //               secondary: grey[800],
-  //             }
-  //             : {
-  //               primary: "#fff",
-  //               secondary: grey[500],
-  //             }),
-  //         },
-  //       },
-  //     }),
-  //   [mode]
-  // );
 
   useEffect(() => {
-    // navInit()
-    navToWorkSpace();
+    navInit()
+    // navToWorkSpace();
   }, []);
 
   return (
