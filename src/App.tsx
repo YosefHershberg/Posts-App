@@ -1,49 +1,135 @@
-import React, { useState, useEffect, createContext } from 'react';
-import './scss/styles.scss'
-import Main from './pages/Main';
-import NavbarComp from './components/Navbar';
-import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
-import { currentUser } from './state/userSlice'
-import { user } from './types';
+import React, { useState, useEffect, createContext, useMemo } from "react";
+import Main from "./pages/Main";
+import NavbarComp from "./components/Navbar";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { currentUser } from "./state/userSlice";
+import { user } from "./types";
+import { AppComp } from "./styling/styles";
+import { amber, deepOrange, grey, blueGrey, green, blue } from "@mui/material/colors";
+import { ThemeProvider, useTheme, createTheme } from "@mui/material/styles";
 
 type appContextType = {
-  navToWorkSpace: () => void,
-  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>
-}
+  navToWorkSpace: () => void;
+  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export const AppContext = createContext<appContextType>({
   navToWorkSpace: () => { },
-  setIsFetching: () => { }
-})
+  setIsFetching: () => { },
+});
 
 export default function App() {
-  const [isFetching, setIsFetching] = useState<boolean>(false)
-  const navigate = useNavigate();
-  const currentUser1 = useSelector(currentUser)
-  const navToWorkSpace = () => navigate(`user/${currentUser1.id}`, { replace: true });
-  const navInit = () => navigate('user', { replace: true })
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [mode, setMode] = useState("light");
 
-  const [activeUser, setActiveUser] = useState({
-    email: "berioo20003@gmail.com",
-    firstName: "Yosef",
-    id: "63fb2d871f4ca39432fd455a",
-    lastName: "Hershberg",
-    registerDate: "2023-02-26T09:59:35.268Z",
-    updatedDate: "2023-02-26T09:59:35.268Z",
-  })
+  const currentUser1 = useSelector(currentUser);
+  const navigate = useNavigate();
+  const navToWorkSpace = () =>
+    navigate(`user/${currentUser1.id}`, { replace: true });
+  const navInit = () => navigate("user", { replace: true });
+
+  const colorMode = {
+    mode,
+    toggleColorMode: () => {
+      setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    },
+  }
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          primary: {
+            ...(mode === "dark" ? {
+              main: grey[600],
+            }
+              : {
+                main: blue[700],
+              }),
+          },
+          background: {
+            ...(mode === "dark" ? {
+              default: blueGrey[900],
+              paper: blueGrey[800],
+            }
+              : {
+                default: grey[50],
+                paper: grey[200],
+              }),
+          },
+          text: {
+            ...(mode === "light"
+              ? {
+                primary: grey[900],
+                secondary: grey[800],
+              }
+              : {
+                primary: "#fff",
+                secondary: grey[500],
+              }),
+          },
+        },
+      }),
+    [mode]
+  );
+  
+  // const theme = useMemo(
+  //   () =>
+  //     createTheme({
+  //       palette: {
+  //         primary: {
+  //           ...(mode === "dark" ? {
+  //             main: grey[600],
+  //           }
+  //             : {
+  //               main: blue[700],
+  //             }),
+  //         },
+  //         background: {
+  //           ...(mode === "dark" ? {
+  //             default: blueGrey[900],
+  //             paper: blueGrey[800],
+  //           }
+  //             : {
+  //               default: grey[50],
+  //               paper: grey[200],
+  //             }),
+  //         },
+  //         text: {
+  //           ...(mode === "light"
+  //             ? {
+  //               primary: grey[900],
+  //               secondary: grey[800],
+  //             }
+  //             : {
+  //               primary: "#fff",
+  //               secondary: grey[500],
+  //             }),
+  //         },
+  //       },
+  //     }),
+  //   [mode]
+  // );
 
   useEffect(() => {
-    navInit()
-    // navToWorkSpace()
+    // navInit()
+    navToWorkSpace();
   }, []);
 
   return (
-    <div className="app">
-      <AppContext.Provider value={{ navToWorkSpace: navToWorkSpace, setIsFetching: setIsFetching }}>
-        <NavbarComp isFetching={isFetching} />
-        <Main />
-      </AppContext.Provider>
-    </div>
-  )
+    <ThemeProvider theme={theme}>
+      <AppComp sx={{ bgcolor: "background.default", color: "text.primary" }}>
+        <AppContext.Provider
+          value={{
+            navToWorkSpace: navToWorkSpace,
+            setIsFetching: setIsFetching,
+          }}
+        >
+          <NavbarComp isFetching={isFetching} colorMode={colorMode} />
+          <Main />
+        </AppContext.Provider>
+      </AppComp>
+    </ThemeProvider>
+  );
 }

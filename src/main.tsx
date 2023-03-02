@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from "./state/store"
 import { Provider } from "react-redux"
+import './index.css'
 
 // const queryClient = new QueryClient()
 const queryClient = new QueryClient({

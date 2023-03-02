@@ -6,7 +6,6 @@ import PostsList from './PostsList'
 import WritePost from './WritePost';
 import EditPost from './EditPost';
 import { addAll } from '../state/postsSlice'
-import { Button } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import { AppContext } from '../App'
 import { post } from '../types';
@@ -70,28 +69,17 @@ function UserWorkSpace() {
     // }
 
     return (
-        <>
-            <PostsCotext.Provider value={postsQuery}>
-                <Routes>
-                    <Route path='/' element={<PostsList />} />
-                    <Route path='post' element={<WritePost
-                    // user={userQuery}
-                    />} />
-                    <Route path='edit/:id' element={<EditPost
-                    // user={userQuery}
-                    />} />
-                </Routes>
-                <Link to='post'>
-                    {/* <button className='new-post-btn'>Write New Post</button> */}
-                    <Button
-                        color="primary"
-                        size='lg'
-                        className='new-post-btn'>
-                        Write New Post
-                    </Button>
-                </Link>
-            </PostsCotext.Provider>
-        </>
+        <PostsCotext.Provider value={postsQuery}>
+            <Routes>
+                <Route path='/' element={<PostsList />} />
+                <Route path='post' element={<WritePost
+                // user={userQuery}
+                />} />
+                <Route path='edit/:id' element={<EditPost
+                // user={userQuery}
+                />} />
+            </Routes>
+        </PostsCotext.Provider>
     );
 }
 

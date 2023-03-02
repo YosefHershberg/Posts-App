@@ -5,11 +5,14 @@ import Post from './Post'
 import { allPosts } from '../state/postsSlice'
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { Button, Typography } from '@mui/material'
+import { PostListComp } from '../styling/styles'
+import { Link } from 'react-router-dom';
 
 function PostsList() {
     const allPostsData = useSelector(allPosts)
     const postsQuery = useContext(PostsCotext)
-    const [listContent, setListContent] = useState()
+    // const [listContent, setListContent] = useState()
 
     // useEffect(() => {
     //     loadListContent()
@@ -27,16 +30,30 @@ function PostsList() {
     // }
 
     return (
-        <>
-            <div id="post-list">
-                <h3>Your Posts</h3>
-                {allPostsData.map(post =>
-                    <Post
-                        key={uuidv4()}
-                        post={post}
-                    />)}
-            </div>
-        </>
+        <PostListComp id="post-list">
+            <Typography variant="h4" gutterBottom>
+                Your Posts
+            </Typography>
+            {allPostsData.map(post =>
+                <Post
+                    key={uuidv4()}
+                    post={post}
+                />)}
+            <Link to='post'>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    sx={{
+                        position: 'fixed',
+                        bottom: '3em',
+                        right: '3em',
+                        height: '4em',
+                    }}
+                >
+                    Write New Post
+                </Button>
+            </Link>
+        </PostListComp>
     );
 }
 

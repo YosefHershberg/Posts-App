@@ -6,7 +6,9 @@ import { currentUser } from '../state/userSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppContext } from '../App';
 import { addPost } from '../state/postsSlice'
-import { Form, Input, Button } from 'reactstrap'
+import { Box, TextareaAutosize, Typography, Button } from '@mui/material'
+import { CenterInnerContent, PostListComp } from '../styling/styles';
+import WritePostDumb from '../dumb-components/WritePostDumb';
 
 function WritePost() {
     const [textAreaValue, setTextAreaValue] = useState('')
@@ -15,7 +17,6 @@ function WritePost() {
     const user = useSelector(currentUser)
     const { navToWorkSpace } = useContext(AppContext)
     const dispatch = useDispatch()
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const createPostMutation = useMutation({
         mutationFn: createPost,
@@ -34,34 +35,22 @@ function WritePost() {
         // retry: 3 // if error accures the will retry the mutationFn 3 times 
     })
 
-    async function handleSubmitPost(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
+    async function handleSubmitPost() {
+        // event.preventDefault()
         createPostMutation.mutate({ owner: user, text: textAreaValue })
         navToWorkSpace()
         // createPostMutation.mutateAsync // this returns a promise // VERY USEFULL
         setTextAreaValue('')
     }
 
-    useEffect(() => {
-        textAreaRef.current?.focus()
-    }, []);
-
     return (
-        <Form onSubmit={handleSubmitPost} className='write-form-container'>
-            <h2>Write Post</h2>
-            <Input
-                innerRef={textAreaRef}
-                onChange={(event) => setTextAreaValue(event.target.value)}
-                value={textAreaValue}
-                name="post"
-                type='textarea'
-            ></Input>
-            <Button
-                size='lg'
-                color='primary'
-                disabled={textAreaValue === ''}
-            >Post</Button>
-        </Form>
+        <WritePostDumb
+            textAreaValue={textAreaValue}
+            setTextAreaValue={setTextAreaValue}
+            handleSubmitPost={handleSubmitPost}
+            title={'Write Post'}
+            btnTitle={'Post'}
+        />
     );
 }
 

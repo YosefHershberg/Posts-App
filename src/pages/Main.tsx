@@ -5,12 +5,11 @@ import { Route, Routes } from 'react-router-dom';
 import UserWorkSpace from '../components/UserWorkSpace'
 import Login from './Login';
 import SignInLogInBtns from './signInLogInBtns'
+import { MainComp } from '../styling/styles'
 
 function Main() {
-
-
     return (
-        <main className='main'>
+        <MainComp> 
             <Routes>
                 <Route path='user'>
                     <Route index element={<SignInLogInBtns /> } />
@@ -24,7 +23,7 @@ function Main() {
                     </Route>
                 </Route>
             </Routes>
-        </main>
+        </MainComp>
     )
 }
 

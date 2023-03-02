@@ -1,26 +1,23 @@
 import React from 'react'
-import { Card, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
-
+import { Button, Box } from '@mui/material';
+import { CenterInnerContent } from '../styling/styles';
 
 const SignInLogInBtns = () => {
   return (
-    <div className='new-user-form'>
-      {/* <Card style={{
-        height: '10em',
-        width: '10em',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}> */}
+    <CenterInnerContent>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
         <Link to={'sign-up'} >
-          <Button className='m-2'>Sign up</Button>
+          <Button
+            variant="contained"
+            size='large'
+          >Sign up</Button>
         </Link >
         <Link to={'log-in'}>
-          <Button className='m-2'>Log in</Button>
+          <Button variant="contained" size='large'>Log in</Button>
         </Link>
-      {/* </Card> */}
-    </div>
+      </Box>
+    </CenterInnerContent>
   )
 }
 

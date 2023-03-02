@@ -29,12 +29,12 @@ type stateType = {
 
 const initialState: stateType = {
     user: {
-        // email: "berioo20003@gmail.com",
-        // firstName: "Yosef",
-        // id: "63fb2d871f4ca39432fd455a",
-        // lastName: "Hershberg",
-        // registerDate: "2023-02-26T09:59:35.268Z",
-        // updatedDate: "2023-02-26T09:59:35.268Z",
+        email: "berioo20003@gmail.com",
+        firstName: "Yosef",
+        id: "63fb2d871f4ca39432fd455a",
+        lastName: "Hershberg",
+        registerDate: "2023-02-26T09:59:35.268Z",
+        updatedDate: "2023-02-26T09:59:35.268Z",
     },
     status: 'idle',
     error: undefined,

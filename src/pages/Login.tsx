@@ -2,66 +2,64 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 // import { getUserDetails } from '../api/user.jsx'
 // import { useQuery } from '@tanstack/react-query';
 import { AppContext } from '../App.js';
-import { Form, Card, Button, Input, FormFeedback } from 'reactstrap'
 import { setUser, getUserDetailsThunk, userStatus } from '../state/userSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { Typography, TextField, Button, Box } from '@mui/material';
+import { CenterInnerContent } from '../styling/styles';
+import { textAlign } from '@mui/system';
 
 function Login() {
-    const [inputValue, setInputValue] = useState('')
-    const [id, setId] = useState('')
-    const [wrongId, setWrongId] = useState(false)
-    const inputRef = useRef<HTMLTextAreaElement>(null)
+    const [inputValue, setInputValue] = useState<string>('')
+    const [wrongId, setWrongId] = useState<boolean>(false)
     const { navToWorkSpace } = useContext(AppContext)
     const dispatch = useDispatch()
     const status = useSelector(userStatus)
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        try {
-            dispatch(getUserDetailsThunk(inputValue));
-        } catch (error) {
-            console.error(error);
-            setWrongId(true)
-            setInputValue('')
-            inputRef.current?.focus()
-        }
+        dispatch(getUserDetailsThunk(inputValue));
     }
 
     useEffect(() => {
         console.log(status);
         status === 'succeeded' && navToWorkSpace()
+        if (status === 'failed') {
+            setWrongId(true)
+            setInputValue('')
+        }
     }, [status]);
 
-    // useEffect(() => {
-    //     id != '' && console.log(id)
-    //     id != '' && navToWorkSpace(id)
-    // }, [id]);
-
     return (
-        <Form className='new-user-form' onSubmit={handleSubmit}>
-            <Card style={{
-                minHeight: '10em',
-                width: '20em',
+        <CenterInnerContent>
+            <Box component='form' onSubmit={handleSubmit} sx={{
                 padding: '1em',
+                border: '1px solid gray',
+                borderRadius: '5px',
+                textAlign: 'center'
             }}>
-                <h3>Enter user ID</h3>
-                <Input
-                    invalid={wrongId}
-                    innerRef={inputRef}
+                <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
+                    Log in
+                </Typography>
+                <TextField
+                    required
+                    fullWidth
+                    id="outlined-required"
+                    label="ID"
+                    error={wrongId}
+                    helperText={wrongId && "Wrong ID Try again"}
                     type="text"
                     onChange={(event) => setInputValue(event.target.value)}
+                    // autoFocus
                     value={inputValue}
+                    onClick={() => setWrongId(false)}
                 />
-                <FormFeedback>
-                    Wrong Id. Try again
-                </FormFeedback>
                 <Button
-                    className='mt-3'
-                    disabled={!inputValue}
-                // onClick={handleSubmit}
-                >Submit</Button>
-            </Card>
-        </Form>
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                    sx={{ marginTop: 2 }}>Log In</Button>
+            </Box>
+        </CenterInnerContent>
     )
 }
 
